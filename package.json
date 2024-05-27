@@ -1,0 +1,15 @@
+{
+  "name": "no",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "clear && node Server/api.js && open Reciever/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
