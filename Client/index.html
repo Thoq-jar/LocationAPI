@@ -1,10 +1,98 @@
 <!doctype html>
 <html>
     <head>
-        <title>No</title>
+        <title>LocationAPI</title>
         <style>
             body {
                 user-select: none;
                 -webkit-user-select: none;
                 -moz-user-select: none;
-         
+                -ms-user-select: none;
+                -o-user-select: none;
+                background-color: rgb(10, 10, 10);
+                color: #fff;
+                font-family: sans-serif;
+            }
+
+            .wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                flex-direction: column;
+            }
+
+            .title {
+                text-align: center;
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+
+            .location {
+                max-width: fit-content;
+                margin: 0 auto;
+                margin-bottom: 2%;
+            }
+
+            .btn-1 {
+                max-width: fit-content;
+                margin: 0 auto;
+                background-color: #111;
+                color: #fff;
+                border-radius: 3px;
+                border: 2px solid #fff;
+                transition: 0.3s ease-in-out;
+                padding: 10px 20px;
+                cursor: pointer;
+            }
+
+            .btn-1:hover {
+                background-color: #fff;
+                color: #111;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <h1 class="title">Send your location</h1>
+            <p class="location">
+                Current Location (Lat, Long): <span id="location"></span>
+            </p>
+            <div id="btn-1" class="btn-1">Send location</div>
+        </div>
+
+        <script>
+            window.addEventListener("load", () => {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    document.getElementById("location").innerText =
+                        "Geolocation is not supported by this browser.";
+                }
+            });
+
+            function showPosition(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                document.getElementById("location").innerText =
+                    `${latitude}, ${longitude}`;
+            }
+
+            const locationBtn = document.getElementById("btn-1");
+            locationBtn.addEventListener("click", () => {
+                const location = document.getElementById("location").innerText;
+                fetch("/send-location", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ location }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => console.log(data))
+                    .catch((error) => console.error("Error:", error));
+            });
+        </script>
+    </body>
+</html>
